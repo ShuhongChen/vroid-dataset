@@ -1,0 +1,22 @@
+https://hub.vroid.com/en/characters/8152688276336334545/models/2786178752209792992
+&dr=https://accounts.pixiv.net/
+&ul=en-us
+&de=UTF-8
+&dt=Sonia / Sonia - VRoid Hub
+&sd=24-bit&sr=1080x1920
+&vp=1080x1809
+&je=0
+&ec=ViewModel
+&ea=Click
+&el=Download
+&_u=yCCAAUABAAAAAC~
+&jid=
+&gjid=
+&cid=1070880383.1632358464
+&tid=UA-1830249-141
+&_gid=1643888701.1632358464
+&gtm=2wg9m05VTNSVM
+&z=2019185817
+
+
+/api/character_models/2786178752209792992/versions/100592301394331831/download

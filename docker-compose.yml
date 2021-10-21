@@ -1,0 +1,17 @@
+version: '2'
+services:
+  scrapy:
+    container_name: scrapy
+    build: ./VRoidSpider
+    command: ["scrapy","crawl","VRoidSpider","-L","WARNING","-a","max_models=${MAX_MODELS}","-a","mode=$MODE", "-a", "cookie=$COOKIE"]
+    environment:
+      - PYTHONBUFFERED=1
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 5000:5000
+    environment:
+      - MAX_MODELS: "20000"
+      - MODE: 's'
+      - COOKIE: "cookieToAuthHere"
+
