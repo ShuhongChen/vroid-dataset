@@ -54,7 +54,8 @@ Cookie: `cookie=rndomcookietoken` Token extracted to access VRoid Hub.
 
 
 
-
+### Possible Debugs:
+Run `docker-compose up --build --force-recreate` if does not run after edits.
 
 
 ### Known Issues:
