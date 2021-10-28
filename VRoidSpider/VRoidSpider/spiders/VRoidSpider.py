@@ -23,6 +23,7 @@ class VRoidSpider(scrapy.Spider):
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
+            ### Future Versions Might Need This Header To Be Updated To Match Updates To Webiste/
             "x-api-version": "10"
     }
     cookies = {
@@ -45,9 +46,12 @@ class VRoidSpider(scrapy.Spider):
     # Scrape: `-a mode=s` Crawls for N models based on parameters and downloads them.
     # Crawl: `-a mode=c` Crawls for N models and saves their information into a JSON file.
     # Download: `-a mode=d` Loads a JSON file of crawled models and downloads them.
+    # Cookie: `-a cookie=rndomcookietoken` Token extracted to access VRoid Hub.
 
 
-    def __init__(self, max_models=200, json_file = None, max_duplicate_models = 50, mode="s"):
+    def __init__(self, max_models=200, json_file = None, max_duplicate_models = 50, mode="s", cookie=""):
+        if cookie is not "":
+            self.cookies["_vroid_session"] = cookie
         self.mode = mode
         print("\n\n==========  Initializing Spider ==========")
         # Set up a Signal such that the function `self.spider_closed` is called when the spider stops crawling.        
@@ -77,8 +81,8 @@ class VRoidSpider(scrapy.Spider):
         print("\n\n")
 
         # Initialize Progress Bar.
-        self.progress_bar = tqdm(total=self.max_models)
-        self.progress_bar.update(len(self.models))
+        # self.progress_bar = tqdm(total=self.max_models)
+        # self.progress_bar.update(len(self.models))
 
 
     def start_requests(self):
@@ -96,14 +100,27 @@ class VRoidSpider(scrapy.Spider):
 
 
     def download_model(self, response):
-        os.mkdir(os.path.join('files', id))
         id = response.request.meta['redirect_urls'][0].split('/')[5]
-        path = os.path.join('files', id, (id + ".vrm"))
-        json_path = os.path.join('files', id, (id + ".json"))
+        
+        print("Download Model")
+
+        if not os.path.isdir(os.path.join('files', id[-1])):
+            os.mkdir(os.path.join('files', id[-1]))
+
+        # MakeDir For Folder
+        if not os.path.exists(os.path.join('files', id[-1], id)):
+            os.mkdir(os.path.join('files', id[-1], id))
+
+
+        path = os.path.join('files', id[-1], id, (id + ".vrm"))
+        json_path = os.path.join('files', id[-1], id, (id + ".json"))
         with open(path, 'wb') as write_file:
             write_file.write(response.body)
-        with open(json_path, 'wb') as write_file:
-            json.dump(write_file, self.models[id])
+        with open(json_path, 'w') as json_file:
+            if type(json.dumps(self.models[id])) is str:
+                json_file.write(json.dumps(self.models[id]))
+            else:
+                print("Hell Naww")
         return
 
 
@@ -127,9 +144,7 @@ class VRoidSpider(scrapy.Spider):
             else:
                 modelNotAdded += 1
 
-
-        self.progress_bar.update(modelsAdded)
-
+        # self.progress_bar.update(modelsAdded)
 
         if(modelsAdded < 5):
             if (self.max_duplicate_models < 0):
@@ -158,10 +173,11 @@ class VRoidSpider(scrapy.Spider):
                             yield scrapy.Request(url=(self.baseUrl + self.model_download_format.format(model["id"], model["latest_character_model_version"]["id"])), headers=self.headers, cookies=self.cookies, callback=self.download_model)
                         else:
                             print("File Found, Skipping Download For Model Nr: {} ".format(self.dwl_count))
+
     def spider_closed(self, spider):
 
         # CLose Progress Bar To Limit Clutter In Output
-        self.progress_bar.close()
+        # self.progress_bar.close()
         
         print("\n\n========== Finished Crawling ==========\n\n")
         print("Models Collected: ")

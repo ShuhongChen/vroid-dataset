@@ -8,6 +8,7 @@ services:
       - PYTHONBUFFERED=1
     volumes:
       - ./data:/app/data
+      - ./files:/app/files
     ports:
       - 5000:5000
       # Mode = ['s', 'c', 'd'] == 'scraping', 'crawling', 'downloading'
