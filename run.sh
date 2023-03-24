@@ -1,13 +1,13 @@
 #!/bin/bash
 
-
-
-export MODE=c
-export MAX_MODELS=200  
-export COOKIE=578a575e340c4de458defbba5275749f
-
+export MODE=d
+export MAX_MODELS=20000
+export JSON_FILE='_data/lustrous/raw/vroid/metadata.json'
+source ./_env/vroid_cookie.bashrc
 
 docker-compose up
 
-
 docker-compose down
+
+
+

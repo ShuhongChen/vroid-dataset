@@ -50,7 +50,7 @@ class VRoidSpider(scrapy.Spider):
 
 
     def __init__(self, max_models=200, json_file = None, max_duplicate_models = 50, mode="s", cookie=""):
-        if cookie is not "":
+        if cookie != "":
             self.cookies["_vroid_session"] = cookie
         self.mode = mode
         print("\n\n==========  Initializing Spider ==========")
@@ -65,6 +65,7 @@ class VRoidSpider(scrapy.Spider):
         # If A File Is Provided When The Scraper Is Called We Load That File Up.
         if json_file is not None:
             print("Loading Model List From File: " + json_file)
+            # print(os.listdir())
             with open(json_file) as in_file:
                 self.models = json.loads(in_file.read())
                 print("Loaded {} Models From File".format(len(self.models)))
@@ -96,24 +97,35 @@ class VRoidSpider(scrapy.Spider):
                 yield scrapy.Request(url=(self.baseUrl+url), headers=self.headers, callback=self.crawl)
         elif self.mode == "d":
             for model in self.models.values():
-                yield scrapy.Request(url=(self.baseUrl + self.model_download_format.format(model["id"])), headers=self.headers, callback=self.download_model)
+                yield scrapy.Request(
+                    url=(self.baseUrl + self.model_download_format.format(model["id"], model["latest_character_model_version"]["id"])),
+                    headers=self.headers,
+                    cookies=self.cookies,
+                    callback=self.download_model,
+                )
+                # yield scrapy.Request(
+                #     url=(self.baseUrl + self.model_download_format.format(model["id"]), model["latest_character_model_version"]["id"]),
+                #     headers=self.headers,
+                #     callback=self.download_model,
+                # )
 
 
     def download_model(self, response):
         id = response.request.meta['redirect_urls'][0].split('/')[5]
         
         print("Download Model")
+        odn = './_data/lustrous/raw/vroid'
 
-        if not os.path.isdir(os.path.join('files', id[-1])):
-            os.mkdir(os.path.join('files', id[-1]))
+        if not os.path.isdir(os.path.join(odn, id[-1])):
+            os.mkdir(os.path.join(odn, id[-1]))
 
         # MakeDir For Folder
-        if not os.path.exists(os.path.join('files', id[-1], id)):
-            os.mkdir(os.path.join('files', id[-1], id))
+        if not os.path.exists(os.path.join(odn, id[-1], id)):
+            os.mkdir(os.path.join(odn, id[-1], id))
 
 
-        path = os.path.join('files', id[-1], id, (id + ".vrm"))
-        json_path = os.path.join('files', id[-1], id, (id + ".json"))
+        path = os.path.join(odn, id[-1], id, (id + ".vrm"))
+        json_path = os.path.join(odn, id[-1], id, (id + ".json"))
         with open(path, 'wb') as write_file:
             write_file.write(response.body)
         with open(json_path, 'w') as json_file:
@@ -160,7 +172,7 @@ class VRoidSpider(scrapy.Spider):
             return
         else:
             yield scrapy.Request(url=(self.baseUrl+results['_links']["next"]["href"]), headers=self.headers, callback=self.crawl)
-            if self.mode is "s":
+            if self.mode == "s":
                 for model in tempModels:
                     if model["is_downloadable"] == True:
                         # check if file exists

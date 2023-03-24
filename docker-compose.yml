@@ -3,10 +3,18 @@ services:
   scrapy:
     container_name: scrapy
     build: ./VRoidSpider
-    command: ["scrapy","crawl","VRoidSpider","-L","WARNING","-a","max_models=${MAX_MODELS}","-a","mode=${MODE}", "-a", "cookie=${COOKIE}"]
+    command: [
+      "scrapy", "crawl", "VRoidSpider",
+      "-L", "WARNING",
+      "-a", "max_models=${MAX_MODELS}",
+      "-a", "mode=${MODE}",
+      "-a", "cookie=${COOKIE}",
+      "-a", "json_file=${JSON_FILE}",
+    ]
     environment:
       - PYTHONBUFFERED=1
     volumes:
+      - ./_data:/app/_data
       - ./data:/app/data
       - ./files:/app/files
     ports:
