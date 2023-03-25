@@ -3,7 +3,7 @@
 
 # vroid-dataset
 
-This repo downloads the Vtubers illustrations dataset introduced in [PAniC-3D: Stylized Single-view 3D Reconstruction from Portraits of Anime Characters](https://github.com/ShuhongChen/panic3d-anime-reconstruction).  As described in that repo, this downloader will add to `./_data/lustrous`
+This repo downloads the Vroid 3D models dataset introduced in [PAniC-3D: Stylized Single-view 3D Reconstruction from Portraits of Anime Characters](https://github.com/ShuhongChen/panic3d-anime-reconstruction).  As described in that repo, this downloader will add to `./_data/lustrous`
 
 
 ## download
