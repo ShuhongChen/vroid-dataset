@@ -10,8 +10,16 @@ This repo downloads the Vroid 3D models dataset introduced in [PAniC-3D: Stylize
 
 Download the `vroid-dataset.zip` from the project's [drive folder](https://drive.google.com/drive/folders/1Zpt9x_OlGALi-o-TdvBPzUPcvTc7zpuV?usp=share_link), and merge it with this repo's file structure.  There should be a `./_data/lustrous/raw/vroid/metadata.json`, which the following commands will use to download the models.  Note that `metadata.json` also contains all vroid model attributions.
 
-    # follow instructions in `./_env/vroid_cookie.bashrc` to get your cookie
+Then, get your Vroid hub cookie following these steps:
+
+    1) login to https://hub.vroid.com/en/ on chrome
+    2) open devtools (f12)
+    3) go to Application > Cookies > https://hub.vroid.com/en/
+    4) copy the value of `_vroid_session`
+    5) replace the cookie value in `./_env/vroid_cookie.bashrc` with your new cookie:
     cp ./_env/vroid_cookie_template.bashrc ./_env/vroid_cookie.bashrc
+
+Finally, build the container and run the scraper:
 
     # build the container 
     docker-compose build
