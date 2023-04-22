@@ -8,7 +8,7 @@ This repo downloads the Vroid 3D models dataset introduced in [PAniC-3D: Stylize
 
 ## download
 
-Download the `vroid-dataset.zip` from the project's [drive folder](https://drive.google.com/drive/folders/1Zpt9x_OlGALi-o-TdvBPzUPcvTc7zpuV?usp=share_link), and merge it with this repo's file structure.  There should be a `./_data/lustrous/raw/vroid/metadata.json`, which the following commands will use to download the models.  Note that `metadata.json` also contains all vroid model attributions.
+Download the `panic_data_models_merged.zip` from the project's [drive folder](https://drive.google.com/drive/folders/1Zpt9x_OlGALi-o-TdvBPzUPcvTc7zpuV?usp=share_link), and merge it with this repo's file structure.  There should be a `./_data/lustrous/raw/vroid/metadata.json`, which the following commands will use to download the models.  Note that `metadata.json` also contains all vroid model attributions.
 
 Then, get your Vroid hub cookie following these steps:
 
